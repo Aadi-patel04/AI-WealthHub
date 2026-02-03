@@ -1,19 +1,55 @@
 "use client";
 
+import { bulkDeleteTransactions } from "@/actions/accounts";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { categoryColors } from "@/data/categories";
 import useFetch from "@/hooks/use-fetch";
-import { Checkbox } from "@radix-ui/react-checkbox";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { SelectContent, SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
-import { Badge, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Clock, MoreHorizontal, RefreshCw, Search, Trash, X } from "lucide-react";
+import { format } from "date-fns";
+import {
+  Badge,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  Clock,
+  MoreHorizontal,
+  RefreshCw,
+  Search,
+  Trash,
+  X,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
-import { Select } from "react-day-picker";
+import { toast } from "sonner";
+
+
+// import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
 import { BarLoader } from "react-spinners";
+import { cn } from "@/lib/utils";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -183,7 +219,7 @@ export function TransactionTable({ transactions }) {
               setCurrentPage(1);
             }}
           >
-            <SelectTrigger className="w-[130px]">
+            <SelectTrigger className="w-32.5">
               <SelectValue placeholder="All Types" />
             </SelectTrigger>
             <SelectContent>
@@ -199,7 +235,7 @@ export function TransactionTable({ transactions }) {
               setCurrentPage(1);
             }}
           >
-            <SelectTrigger className="w-[130px]">
+            <SelectTrigger className="w-32.5">
               <SelectValue placeholder="All Transactions" />
             </SelectTrigger>
             <SelectContent>
@@ -240,7 +276,7 @@ export function TransactionTable({ transactions }) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[50px]">
+              <TableHead className="w-12.5">
                 <Checkbox
                   checked={
                     selectedIds.length === paginatedTransactions.length &&
@@ -293,7 +329,7 @@ export function TransactionTable({ transactions }) {
                 </div>
               </TableHead>
               <TableHead>Recurring</TableHead>
-              <TableHead className="w-[50px]" />
+              <TableHead className="w-12.5" />
             </TableRow>
           </TableHeader>
           <TableBody>

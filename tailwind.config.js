@@ -5,7 +5,13 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        // Matches common arbitrary pixel values used in the UI
+        "12.5": "3.125rem", // 50px
+        "32.5": "8.125rem", // 130px
+      },
+    },
   },
   plugins: [],
 };
