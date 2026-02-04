@@ -1,3 +1,4 @@
+"use"
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import { LayoutDashboard, PenBox } from 'lucide-react';
 import React from 'react'
